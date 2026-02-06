@@ -152,10 +152,40 @@
         opacity: 0;
       }
     }
+
+    .falling-petal {
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      animation: petalFall linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes petalFall {
+      0% {
+        transform: translateY(-5vh) rotate(0deg) translateX(0px);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.8;
+      }
+      90% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(105vh) rotate(360deg) translateX(80px);
+        opacity: 0;
+      }
+    }
+
+    .bubu-dudu {
+      width: 280px;
+      margin-bottom: 1.5rem;
+    }
   </style>
 </head>
 <body>
-  <img class="cute-gif" src="https://media1.tenor.com/m/snwhuSNwrbsAAAAC/cute-bear.gif" alt="Cute bear with hearts">
+  <img class="bubu-dudu" src="https://media1.tenor.com/m/uzM3q07nz6IAAAAC/bubu-dudu-sseeyall.gif" alt="Bubu and Dudu">
   <h1>Will You Be My Valentine?</h1>
   <div class="buttons" id="buttons">
     <button class="btn-yes" id="btnYes" onclick="sayYes()">Yes!</button>
@@ -168,6 +198,24 @@
   <div class="celebration" id="celebration"></div>
 
   <script>
+    // Cherry blossoms and cute things falling
+    const petals = ['🌸', '🌸', '🌸', '🌺', '💮', '🩷', '🌷', '✿'];
+    function createPetal() {
+      const petal = document.createElement('span');
+      petal.classList.add('falling-petal');
+      petal.textContent = petals[Math.floor(Math.random() * petals.length)];
+      petal.style.left = Math.random() * 100 + '%';
+      petal.style.fontSize = (Math.random() * 1.2 + 0.8) + 'rem';
+      petal.style.animationDuration = (Math.random() * 5 + 5) + 's';
+      petal.style.animationDelay = (Math.random() * 2) + 's';
+      document.body.appendChild(petal);
+      setTimeout(() => petal.remove(), 12000);
+    }
+    setInterval(createPetal, 400);
+    for (let i = 0; i < 15; i++) {
+      setTimeout(createPetal, i * 200);
+    }
+
     let noAttempts = 0;
 
     function sayYes() {
