@@ -185,7 +185,7 @@
   </style>
 </head>
 <body>
-  <img class="bubu-dudu" src="https://media1.tenor.com/m/uzM3q07nz6IAAAAC/bubu-dudu-sseeyall.gif" alt="Bubu and Dudu">
+  <img class="cute-gif" src="https://media1.tenor.com/m/snwhuSNwrbsAAAAC/cute-bear.gif" alt="Cute bear with hearts">
   <h1>Will You Be My Valentine?</h1>
   <div class="buttons" id="buttons">
     <button class="btn-yes" id="btnYes" onclick="sayYes()">Yes!</button>
@@ -198,30 +198,37 @@
   <div class="celebration" id="celebration"></div>
 
   <script>
-    // Cherry blossoms and cute things falling
-    const petals = ['🌸', '🌸', '🌸', '🌺', '💮', '🩷', '🌷', '✿'];
-    function createPetal() {
-      const petal = document.createElement('span');
-      petal.classList.add('falling-petal');
-      petal.textContent = petals[Math.floor(Math.random() * petals.length)];
-      petal.style.left = Math.random() * 100 + '%';
-      petal.style.fontSize = (Math.random() * 1.2 + 0.8) + 'rem';
-      petal.style.animationDuration = (Math.random() * 5 + 5) + 's';
-      petal.style.animationDelay = (Math.random() * 2) + 's';
-      document.body.appendChild(petal);
-      setTimeout(() => petal.remove(), 12000);
-    }
-    setInterval(createPetal, 400);
-    for (let i = 0; i < 15; i++) {
-      setTimeout(createPetal, i * 200);
-    }
-
     let noAttempts = 0;
+    let petalInterval = null;
 
     function sayYes() {
       document.getElementById('buttons').style.display = 'none';
       document.getElementById('responseYes').classList.add('visible');
       launchCelebration();
+
+      // Swap to bubu dudu GIF
+      const gif = document.querySelector('.cute-gif');
+      gif.src = 'https://media1.tenor.com/m/uzM3q07nz6IAAAAC/bubu-dudu-sseeyall.gif';
+      gif.alt = 'Bubu and Dudu';
+      gif.classList.add('bubu-dudu');
+
+      // Start cherry blossoms falling
+      const petals = ['🌸', '🌸', '🌸', '🌺', '💮', '🩷', '🌷', '✿'];
+      function createPetal() {
+        const petal = document.createElement('span');
+        petal.classList.add('falling-petal');
+        petal.textContent = petals[Math.floor(Math.random() * petals.length)];
+        petal.style.left = Math.random() * 100 + '%';
+        petal.style.fontSize = (Math.random() * 1.2 + 0.8) + 'rem';
+        petal.style.animationDuration = (Math.random() * 5 + 5) + 's';
+        petal.style.animationDelay = (Math.random() * 2) + 's';
+        document.body.appendChild(petal);
+        setTimeout(() => petal.remove(), 12000);
+      }
+      petalInterval = setInterval(createPetal, 400);
+      for (let i = 0; i < 15; i++) {
+        setTimeout(createPetal, i * 200);
+      }
 
       // Play YouTube audio in hidden iframe
       const player = document.createElement('div');
