@@ -142,6 +142,26 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    .hmph-popup {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-size: 6rem;
+      animation: hmphPop 1.2s ease forwards;
+      z-index: 20;
+      pointer-events: none;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+    }
+
+    @keyframes hmphPop {
+      0% { transform: translate(-50%, -50%) scale(0) rotate(-20deg); opacity: 0; }
+      30% { transform: translate(-50%, -50%) scale(1.3) rotate(10deg); opacity: 1; }
+      50% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+      80% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(0.5) rotate(-10deg); opacity: 0; }
+    }
+
     .celebration {
       position: fixed;
       top: 0;
@@ -182,9 +202,6 @@
     </div>
     <div class="response" id="responseYes">
       <p>&#127881; Yay!! You made my day! &#10084;&#65039;</p>
-    </div>
-    <div class="response" id="responseNo">
-      <p>That's okay... but are you sure? &#128149;</p>
     </div>
   </div>
 
@@ -250,8 +267,13 @@
     }
 
     function sayNo() {
-      document.getElementById('buttons').style.display = 'none';
-      document.getElementById('responseNo').classList.add('visible');
+      // Nope! Show the hmph emoji instead
+      const card = document.getElementById('card');
+      const hmph = document.createElement('div');
+      hmph.className = 'hmph-popup';
+      hmph.textContent = '😤';
+      card.appendChild(hmph);
+      setTimeout(() => hmph.remove(), 1200);
     }
 
     // Heart confetti celebration
