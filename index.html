@@ -182,6 +182,54 @@
       width: 280px;
       margin-bottom: 1.5rem;
     }
+
+    .fade-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      opacity: 0;
+      z-index: 100;
+      pointer-events: none;
+      transition: opacity 2s ease;
+    }
+
+    .fade-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .slideshow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      z-index: 101;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slideshow.active {
+      display: flex;
+    }
+
+    .slideshow img {
+      max-width: 85%;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 12px;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    .slideshow img.visible {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -196,6 +244,10 @@
   </div>
 
   <div class="celebration" id="celebration"></div>
+  <div class="fade-overlay" id="fadeOverlay"></div>
+  <div class="slideshow" id="slideshow">
+    <img id="slideshowImg" src="" alt="slideshow photo">
+  </div>
 
   <script>
     let noAttempts = 0;
@@ -235,6 +287,45 @@
       player.className = 'hidden-player';
       player.innerHTML = '<iframe width="1" height="1" src="https://www.youtube.com/embed/pS7Hbxv2E_E?autoplay=1&start=5&loop=1&playlist=pS7Hbxv2E_E" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
       document.body.appendChild(player);
+
+      // After 3 seconds, fade to black then start slideshow
+      setTimeout(() => {
+        document.getElementById('fadeOverlay').classList.add('active');
+        // Stop petals
+        clearInterval(petalInterval);
+
+        // After fade completes (2s transition), start slideshow
+        setTimeout(() => {
+          startSlideshow();
+        }, 2000);
+      }, 3000);
+    }
+
+    function startSlideshow() {
+      const photos = ['photos/1.jpg', 'photos/2.jpg', 'photos/3.jpg', 'photos/4.jpg', 'photos/5.jpg', 'photos/6.jpg'];
+      const slideshow = document.getElementById('slideshow');
+      const img = document.getElementById('slideshowImg');
+      let index = 0;
+
+      slideshow.classList.add('active');
+
+      function showNext() {
+        if (index >= photos.length) {
+          // Loop back or end
+          index = 0;
+        }
+        img.classList.remove('visible');
+        setTimeout(() => {
+          img.src = photos[index];
+          img.onload = () => {
+            img.classList.add('visible');
+          };
+          index++;
+        }, 500);
+      }
+
+      showNext();
+      setInterval(showNext, 4000);
     }
 
     function sayNo() {
