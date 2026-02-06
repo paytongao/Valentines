@@ -167,7 +167,13 @@
 
   <div class="celebration" id="celebration"></div>
 
+  <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
   <script>
+    // Store Spotify API reference when ready
+    window.spotifyAPI = null;
+    window.onSpotifyIframeApiReady = (IFrameAPI) => {
+      window.spotifyAPI = IFrameAPI;
+    };
     let noAttempts = 0;
 
     function sayYes() {
@@ -175,11 +181,21 @@
       document.getElementById('responseYes').classList.add('visible');
       launchCelebration();
 
-      // Inject Spotify embed on click so autoplay is allowed
+      // Create Spotify embed container and use iFrame API to autoplay
       const container = document.createElement('div');
       container.className = 'spotify-embed';
-      container.innerHTML = '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/3oJLF4CajKbrJSdxpXKXc8?utm_source=generator&autoplay=1" width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>';
+      container.id = 'spotify-player';
       document.getElementById('responseYes').appendChild(container);
+
+      const element = document.getElementById('spotify-player');
+      const options = {
+        uri: 'spotify:track:3oJLF4CajKbrJSdxpXKXc8',
+        width: '100%',
+        height: 152
+      };
+      window.spotifyAPI.createController(element, options, (controller) => {
+        controller.playFromStart();
+      });
     }
 
     function sayNo() {
