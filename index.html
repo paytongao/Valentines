@@ -87,12 +87,12 @@
       display: block;
     }
 
-    .spotify-embed {
-      margin-top: 2rem;
-      width: 100%;
-      max-width: 400px;
-      border-radius: 12px;
+    .hidden-player {
+      position: absolute;
+      width: 0;
+      height: 0;
       overflow: hidden;
+      pointer-events: none;
     }
 
     @keyframes fadeIn {
@@ -167,13 +167,7 @@
 
   <div class="celebration" id="celebration"></div>
 
-  <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
   <script>
-    // Store Spotify API reference when ready
-    window.spotifyAPI = null;
-    window.onSpotifyIframeApiReady = (IFrameAPI) => {
-      window.spotifyAPI = IFrameAPI;
-    };
     let noAttempts = 0;
 
     function sayYes() {
@@ -181,21 +175,11 @@
       document.getElementById('responseYes').classList.add('visible');
       launchCelebration();
 
-      // Create Spotify embed container and use iFrame API to autoplay
-      const container = document.createElement('div');
-      container.className = 'spotify-embed';
-      container.id = 'spotify-player';
-      document.getElementById('responseYes').appendChild(container);
-
-      const element = document.getElementById('spotify-player');
-      const options = {
-        uri: 'spotify:track:3oJLF4CajKbrJSdxpXKXc8',
-        width: '100%',
-        height: 152
-      };
-      window.spotifyAPI.createController(element, options, (controller) => {
-        controller.playFromStart();
-      });
+      // Play YouTube audio in hidden iframe
+      const player = document.createElement('div');
+      player.className = 'hidden-player';
+      player.innerHTML = '<iframe width="1" height="1" src="https://www.youtube.com/embed/pS7Hbxv2E_E?autoplay=1&loop=1&playlist=pS7Hbxv2E_E" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+      document.body.appendChild(player);
     }
 
     function sayNo() {
