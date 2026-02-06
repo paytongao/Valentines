@@ -232,17 +232,32 @@
       opacity: 1;
     }
 
-    .slideshow .end-msg {
-      color: white;
-      font-size: 1.8rem;
-      font-family: 'Georgia', serif;
-      text-align: center;
+    .slideshow .end-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
       opacity: 0;
       transition: opacity 1s ease;
     }
 
-    .slideshow .end-msg.visible {
+    .slideshow .end-container.visible {
       opacity: 1;
+    }
+
+    .slideshow .end-container img {
+      max-width: 400px;
+      width: 80%;
+      opacity: 1;
+      border-radius: 12px;
+    }
+
+    .slideshow .end-msg {
+      color: white;
+      font-size: 3rem;
+      font-family: 'Georgia', serif;
+      text-align: center;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -331,11 +346,18 @@
           img.classList.remove('visible');
           setTimeout(() => {
             img.style.display = 'none';
+            const container = document.createElement('div');
+            container.className = 'end-container';
+            const gif = document.createElement('img');
+            gif.src = 'https://media1.tenor.com/m/ew_c7J9LQtsAAAAC/i-used-to-pray-for-times-like-this.gif';
+            gif.alt = 'I used to pray for times like this';
+            container.appendChild(gif);
             const msg = document.createElement('div');
             msg.className = 'end-msg';
             msg.textContent = 'BRO I HAVE NO MORE PHOTOS';
-            slideshow.appendChild(msg);
-            setTimeout(() => msg.classList.add('visible'), 100);
+            container.appendChild(msg);
+            slideshow.appendChild(container);
+            setTimeout(() => container.classList.add('visible'), 100);
           }, 800);
           return;
         }
